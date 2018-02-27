@@ -12,7 +12,7 @@ public class GravityManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        gravConst = 0.12f;      // Set gravity constant
+        gravConst = 1.3f;      // Set gravity constant
 	}
 	
 	// Update is called once per frame

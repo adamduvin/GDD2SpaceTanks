@@ -16,8 +16,8 @@ public class BulletScript : MonoBehaviour {
     public bool isEnemyPlayerOneShot = false;
     public bool isEnemyPlayerTwoShot = false;
 
-    GameObject manager;
-    GravityManager gravMngr;
+    public GameObject manager;
+    public GravityManager gravMngr;
 
     // Use this for initialization
     void Start () {
