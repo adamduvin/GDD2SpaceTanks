@@ -10,6 +10,9 @@ public class BulletScript : MonoBehaviour {
 
     private Vector2 movement;
     private Rigidbody2D rigidbodyComponent;
+    public int damage = 1;
+    public bool isEnemyPlayerOneShot = false;
+    public bool isEnemyPlayerTwoShot = false;
 
     // Use this for initialization
     void Start () {
