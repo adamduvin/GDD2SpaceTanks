@@ -81,10 +81,7 @@ public class Player : MonoBehaviour {
     {
         direction = (Vector2)mainCamera.ScreenToWorldPoint((Vector2)Input.mousePosition) - position;
         direction.Normalize();
-        //Quaternion rotation = new Quaternion(direction.x, direction.y, 0.0f, 0.0f);
         transform.up = (Vector3)direction;
-        //transform.Rotate(new Vector3(0.0f, 0.0f, Input.GetAxis("Horiontal")) - (Vector3)(newDirection - direction));
-        //direction = newDirection;
     }
 
     // Applies force to acceleration
