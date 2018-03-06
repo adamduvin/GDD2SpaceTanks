@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class GravityManager : MonoBehaviour {
 
-    public GameObject projectile;       // Player's projectile
-    Rigidbody2D rigidbodyComponent;     // Projectile's rigid body 
-    CircleCollider2D boundingCircle;    // Projectile's bounding circle
-    public GameObject[] obstacles = new GameObject[1];      // List of obstacles
-    public float gravConst;     // Gravity constant
+    public GameObject projectile;               // Player's projectile
+    private Rigidbody2D rigidbodyComponent;     // Projectile's rigid body 
+    private CircleCollider2D boundingCircle;    // Projectile's bounding circle
+    public GameObject[] obstacles;              // List of obstacles
+    public float gravConst;                     // Gravity constant
+    private Vector2 velocity;                   // Projectile velocity
 
-	// Use this for initialization
-	void Start () {
-        gravConst = 1.3f;      // Set gravity constant
-	}
+    // Use this for initialization
+    void Start () {
+        gravConst = 3.6f;      // Set gravity constant
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
+        
 	}
 
     // Calculates the force of gravity
@@ -43,11 +45,11 @@ public class GravityManager : MonoBehaviour {
                 {
                     Vector2 gravity = CalcGravity(projectile.GetComponent<BulletScript>().mass, obstacles[i].GetComponent<ObstacleProperties>().mass, distance.magnitude, obstacles[i].transform.position);
                     Vector2 acceleration = gravity / projectile.GetComponent<BulletScript>().mass;
-                    Vector2 velocity = rigidbodyComponent.velocity;
                     velocity += acceleration;
-                    return velocity;
+                    
                 }
             }
+            return velocity;
         }
         return Vector2.zero;
     }
@@ -58,6 +60,7 @@ public class GravityManager : MonoBehaviour {
         this.projectile = projectile;
         rigidbodyComponent = projectile.GetComponent<Rigidbody2D>();
         boundingCircle = projectile.GetComponent<CircleCollider2D>();
+        velocity = rigidbodyComponent.velocity;
     }
 
     // As a projectile destroys itself, it calls this method to let the manager know it's gone
@@ -66,6 +69,3 @@ public class GravityManager : MonoBehaviour {
         projectile = null;
     }
 }
-
-
-// Man, I really missed C#

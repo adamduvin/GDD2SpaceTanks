@@ -14,9 +14,11 @@ public class Player : MonoBehaviour {
     private float maxForce;         // Maximum applyable force
     private float maxVelocity;      // Maximum possible speed
     public Camera mainCamera;       // Main scene camera
+    public GameObject bullet;       // Bullet prefab
+    public GameObject bulletObject;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         position = transform.position;
         velocity = Vector2.zero;
         acceleration = Vector2.zero;
@@ -25,27 +27,38 @@ public class Player : MonoBehaviour {
         mass = 1.0f;
         maxForce = 1.0f;
         maxVelocity = 5.0f;
+        bulletObject = null;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        Rotate();
-        // Applies forward thrust if 'w' is held down
-        if (Input.GetKey(KeyCode.W))
+        if (turn)
         {
-            ApplyMovement();
-        }
-        // Applies friction if the player lets go of 'w'
-        else
-        {
-            if (velocity.magnitude > 0.1f)
+            Rotate();
+            // Applies forward thrust if 'w' is held down
+            if (Input.GetKey(KeyCode.W))
             {
-                ApplyFriction();
+                ApplyMovement();
             }
-            else velocity = Vector2.zero;
+            // Applies friction if the player lets go of 'w'
+            else
+            {
+                if (velocity.magnitude > 0.1f)
+                {
+                    ApplyFriction();
+                }
+                else velocity = Vector2.zero;
+            }
+            Move();
+
+            var r2d = GetComponent("Rigidbody2D");
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                bulletObject = Instantiate(bullet, transform.position, Quaternion.identity);
+                bulletObject.GetComponent<BulletScript>().player = gameObject;
+            }
         }
-        Move();
-	}
+    }
 
     // Calculates the new velocity and applies it to the position
     void Move()

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BulletScript : MonoBehaviour {
 
-
-    public Vector2 speed;
+    public GameObject player;       // Player who fired the shot
+    //public float speed;
     public Vector2 direction;
     public float mass;
     public float maxSpeed;
@@ -21,13 +21,14 @@ public class BulletScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        speed = new Vector2(1, 1);
-        speed = speed.normalized;
-        direction = new Vector2(1, 1);
-        direction = direction.normalized;
+        //speed = 1.0f;
+        //speed = speed.normalized;
         manager = GameObject.Find("GameManager");
         gravMngr = manager.GetComponent<GravityManager>();
         gravMngr.AssignProjectile(gameObject);
+        player = manager.GetComponent<GameManager>().currentPlayer;
+        direction = player.GetComponent<Player>().direction;
+        direction = direction.normalized;
         mass = 1.0f;
         maxSpeed = 15.0f;
 
@@ -37,9 +38,7 @@ public class BulletScript : MonoBehaviour {
 	void Update () {
 
         // 2 - Movement
-        movement = new Vector2(
-          speed.x * direction.x,
-          speed.y * direction.y);
+        movement = direction * maxSpeed;
 
         
 
@@ -60,6 +59,7 @@ public class BulletScript : MonoBehaviour {
     private void OnBecameInvisible()
     {
         gravMngr.NullProjectile();
+        manager.GetComponent<GameManager>().SwitchTurn();
         Destroy(gameObject);
     }
 }
