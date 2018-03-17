@@ -6,8 +6,8 @@ public class Player : MonoBehaviour {
 
     public bool turn;               // True if it's this player's turn
     private Vector2 position;       // Player's position
-    private Vector2 velocity;       // Player's velocity
-    private Vector2 acceleration;   // Acceleration due to forces
+    public Vector2 velocity;       // Player's velocity
+    public Vector2 acceleration;   // Acceleration due to forces
     public Vector2 direction;       // Direction player is facing
     private float friction;         // Friction coeficient
     private float mass;             // Player's mass
@@ -15,7 +15,8 @@ public class Player : MonoBehaviour {
     private float maxVelocity;      // Maximum possible speed
     public Camera mainCamera;       // Main scene camera
     public GameObject bullet;       // Bullet prefab
-    public GameObject bulletObject;
+    public GameObject bulletObject; // Reference to bullet object
+    public float movementLimit;     // How much farther player can move in their turn, decreases based on time in seconds
 
     // Use this for initialization
     void Start () {
@@ -23,11 +24,12 @@ public class Player : MonoBehaviour {
         velocity = Vector2.zero;
         acceleration = Vector2.zero;
         direction = transform.up.normalized;
-        friction = 0.5f;
+        friction = 0.1f;
         mass = 1.0f;
         maxForce = 1.0f;
-        maxVelocity = 5.0f;
+        maxVelocity = 10.0f;
         bulletObject = null;
+        movementLimit = 1.0f;
 	}
 	
 	// Update is called once per frame
@@ -36,7 +38,7 @@ public class Player : MonoBehaviour {
         {
             Rotate();
             // Applies forward thrust if 'w' is held down
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.W) && movementLimit > 0.0f)
             {
                 ApplyMovement();
             }
@@ -56,6 +58,7 @@ public class Player : MonoBehaviour {
             {
                 bulletObject = Instantiate(bullet, transform.position, Quaternion.identity);
                 bulletObject.GetComponent<BulletScript>().player = gameObject;
+                movementLimit = 0.0f;
             }
         }
     }
@@ -64,10 +67,12 @@ public class Player : MonoBehaviour {
     void Move()
     {
         velocity += acceleration;
-        velocity.Normalize();
-        velocity *= maxVelocity;
-        velocity *= Time.deltaTime;
-        position += velocity;
+        if(velocity.magnitude > maxVelocity)
+        {
+            velocity.Normalize();
+            velocity *= maxVelocity;
+        }
+        position += velocity * Time.deltaTime;
         transform.position = position;
 
         acceleration = Vector2.zero;
@@ -80,6 +85,8 @@ public class Player : MonoBehaviour {
         Vector2 movementForce = direction;
         movementForce *= maxForce;
         ApplyForce(movementForce);
+
+        movementLimit -= Time.deltaTime; //Mathf.Abs(movementForce.magnitude);
     }
 
     // Applies friction force
@@ -93,14 +100,21 @@ public class Player : MonoBehaviour {
     void Rotate()
     {
         direction = (Vector2)mainCamera.ScreenToWorldPoint((Vector2)Input.mousePosition) - position;
-        direction.Normalize();
-        transform.up = (Vector3)direction;
+        if(direction.magnitude > 0.5f)
+        {
+            direction.Normalize();
+            transform.up = (Vector3)direction;
+        }
+        else
+        {
+            direction = (Vector2)transform.up;
+        }
     }
 
     // Applies force to acceleration
     void ApplyForce(Vector2 force)
     {
-        acceleration = force / mass;
+        acceleration += force / mass;
     }
 
 }

@@ -27,5 +27,6 @@ public class GameManager : MonoBehaviour {
         playerIndex %= players.Count;
         currentPlayer = players[playerIndex];
         currentPlayer.GetComponent<Player>().turn = true;
+        currentPlayer.GetComponent<Player>().movementLimit = 1.0f;
     }
 }
