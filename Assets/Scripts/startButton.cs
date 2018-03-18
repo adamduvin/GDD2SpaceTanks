@@ -21,7 +21,7 @@ public class startButton : MonoBehaviour {
 
 	void StartGame()
 	{
-		Application.LoadLevel ("game");
+		Application.LoadLevel ("controls");
 		Debug.Log ("start");
 	}
 }
