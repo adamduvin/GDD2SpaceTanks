@@ -265,10 +265,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turn: 0
+  velocity: {x: 0, y: 0}
+  acceleration: {x: 0, y: 0}
   direction: {x: 0, y: 0}
   mainCamera: {fileID: 2009227907}
   bullet: {fileID: 1615399372337866, guid: 6b86f0a05e1738e42beb99a71cb27e61, type: 2}
   bulletObject: {fileID: 0}
+  movementLimit: 0
 --- !u!1001 &425950015
 Prefab:
   m_ObjectHideFlags: 0
@@ -677,10 +680,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turn: 0
+  velocity: {x: 0, y: 0}
+  acceleration: {x: 0, y: 0}
   direction: {x: 0, y: 0}
   mainCamera: {fileID: 2009227907}
   bullet: {fileID: 1615399372337866, guid: 6b86f0a05e1738e42beb99a71cb27e61, type: 2}
   bulletObject: {fileID: 0}
+  movementLimit: 0
 --- !u!212 &1750630909
 SpriteRenderer:
   m_ObjectHideFlags: 0
