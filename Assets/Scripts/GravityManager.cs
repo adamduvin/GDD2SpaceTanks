@@ -41,13 +41,10 @@ public class GravityManager : MonoBehaviour {
                 Vector2 projPosition = projectile.transform.position;
                 Vector2 obstPosition = obstacles[i].transform.position;
                 Vector2 distance = projPosition - obstPosition;
-                if (distance.magnitude < boundingCircle.radius + obstacles[i].GetComponent<CircleCollider2D>().radius)
-                {
-                    Vector2 gravity = CalcGravity(projectile.GetComponent<BulletScript>().mass, obstacles[i].GetComponent<ObstacleProperties>().mass, distance.magnitude, obstacles[i].transform.position);
-                    Vector2 acceleration = gravity / projectile.GetComponent<BulletScript>().mass;
-                    velocity += acceleration;
-                    
-                }
+
+                Vector2 gravity = CalcGravity(projectile.GetComponent<BulletScript>().mass, obstacles[i].GetComponent<ObstacleProperties>().mass, distance.magnitude, obstacles[i].transform.position);
+                Vector2 acceleration = gravity / projectile.GetComponent<BulletScript>().mass;
+                velocity += acceleration;
             }
             return velocity;
         }

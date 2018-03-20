@@ -29,11 +29,11 @@ public class GameManager : MonoBehaviour {
         playerIndex %= players.Count;
         currentPlayer = players[playerIndex];
         currentPlayer.GetComponent<Player>().turn = true;
+        currentPlayer.GetComponent<Player>().movementLimit = 1.0f;
         if (shot.hit == false)
         {
             shot.isEnemyPlayerOneShot = !shot.isEnemyPlayerOneShot;
             shot.isEnemyPlayerTwoShot = !shot.isEnemyPlayerTwoShot;
         }
-
     }
 }
