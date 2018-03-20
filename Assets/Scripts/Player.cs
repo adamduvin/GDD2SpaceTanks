@@ -79,7 +79,7 @@ public class Player : MonoBehaviour {
                 {
                     //IsKeyEnabled_Space = false;
                     turn = false;
-                    bulletObject = Instantiate(bullet, transform.position, Quaternion.identity);
+                bulletObject = Instantiate(bullet, transform.position + (Vector3)direction, Quaternion.identity);
                     bulletObject.GetComponent<BulletScript>().player = gameObject;
                     movementLimit = 0.0f;
                 }
