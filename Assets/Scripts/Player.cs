@@ -35,7 +35,6 @@ public class Player : MonoBehaviour {
         maxVelocity = 10.0f;
         bulletObject = null;
         movementLimit = 1.0f;
-	}
         manager = GameObject.Find("GameManager");
 
 
@@ -51,7 +50,7 @@ public class Player : MonoBehaviour {
             {
                 Rotate();
                 // Applies forward thrust if 'w' is held down
-                if (Input.GetKey(KeyCode.W))
+                if (Input.GetKey(KeyCode.W) && movementLimit > 0.0f)
                 {
                     ApplyMovement();
                 }
@@ -112,13 +111,6 @@ public class Player : MonoBehaviour {
 
 
         }
-    }
-
-    void Rotate()
-    {
-        direction = (Vector2)mainCamera.ScreenToWorldPoint((Vector2)Input.mousePosition) - position;
-        direction.Normalize();
-        transform.up = (Vector3)direction;
     }
 
     // Calculates the new velocity and applies it to the position
