@@ -15,6 +15,7 @@ public class BulletScript : MonoBehaviour {
     public int damage = 1;
     public bool isEnemyPlayerOneShot = false;
     public bool isEnemyPlayerTwoShot = false;
+    public bool hit = false;
 
     public GameObject manager;
     public GravityManager gravMngr;
@@ -39,7 +40,6 @@ public class BulletScript : MonoBehaviour {
 
         // 2 - Movement
         movement = direction * maxSpeed;
-
         
 
         if (rigidbodyComponent == null) rigidbodyComponent = GetComponent<Rigidbody2D>();
@@ -58,8 +58,10 @@ public class BulletScript : MonoBehaviour {
 
     private void OnBecameInvisible()
     {
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
         gravMngr.NullProjectile();
-        manager.GetComponent<GameManager>().SwitchTurn();
         Destroy(gameObject);
+        manager.GetComponent<GameManager>().SwitchTurn();
+        player.GetComponent<Player>().IsKeyEnabled_Space = true;
     }
 }
