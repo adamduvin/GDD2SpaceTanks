@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
     public GameObject bulletObject; // Reference to bullet object
     public float movementLimit;     // How much farther player can move in their turn, decreases based on time in seconds
     public GameObject manager;
+    public int hp;
 
     public float speed;
     public Rigidbody2D rb2d;
@@ -29,13 +30,14 @@ public class Player : MonoBehaviour {
         velocity = Vector2.zero;
         acceleration = Vector2.zero;
         direction = transform.up.normalized;
-        friction = 0.1f;
+        friction = 1.0f;
         mass = 1.0f;
-        maxForce = 1.0f;
+        maxForce = 10.0f;
         maxVelocity = 10.0f;
         bulletObject = null;
         movementLimit = 1.0f;
         manager = GameObject.Find("GameManager");
+        hp = 3;
 
 
         rb2d = GetComponent<Rigidbody2D>();
@@ -46,43 +48,46 @@ public class Player : MonoBehaviour {
 	void Update () {
         //if (IsKeyEnabled_Space)
         //{
-            if (turn)
+        if (turn)
+        {
+            Rotate();
+            // Applies forward thrust if 'w' is held down
+            if (Input.GetKey(KeyCode.W) && movementLimit > 0.0f)
             {
-                Rotate();
-                // Applies forward thrust if 'w' is held down
-                if (Input.GetKey(KeyCode.W) && movementLimit > 0.0f)
+                ApplyMovement();
+            }
+            // Applies friction if the player lets go of 'w'
+            else
+            {
+                if (rb2d.velocity.magnitude > 0.1f)
                 {
-                    ApplyMovement();
+                    ApplyFriction();
                 }
-                // Applies friction if the player lets go of 'w'
-                else
-                {
-                    if (velocity.magnitude > 0.1f)
-                    {
-                        ApplyFriction();
-                    }
-                    else velocity = Vector2.zero;
-                }
-                Move();
-                //float moveHorizontal = Input.GetAxis("Horizontal");
-                //float moveVertical = Input.GetAxis("Vertical");
-                //float rotateHorizontal = Input.GetAxis("MouseX");
-                // float rotateVertical = Input.GetAxis("MouseY");
-                //direction = new Vector2 (rotateHorizontal,rotateVertical);
-                //Rotate();
-                //transform.Translate(0, moveVertical * speed * Time.deltaTime, 0);
-                //Vector2 movement = new Vector2(moveHorizontal,moveVertical);
-                // rb2d.AddForce(movement*speed*Time.deltaTime);
-                
-                //var r2d = GetComponent("Rigidbody2D");
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    //IsKeyEnabled_Space = false;
-                    turn = false;
+                else rb2d.velocity = Vector2.zero;
+            }
+            //Move();
+
+            //float moveHorizontal = Input.GetAxis("Horizontal");
+            //float moveVertical = Input.GetAxis("Vertical");
+            //float rotateHorizontal = Input.GetAxis("MouseX");
+            // float rotateVertical = Input.GetAxis("MouseY");
+            //direction = new Vector2 (rotateHorizontal,rotateVertical);
+            //Rotate();
+            //transform.Translate(0, moveVertical * speed * Time.deltaTime, 0);
+            //Vector2 movement = new Vector2(moveHorizontal,moveVertical);
+            // rb2d.AddForce(movement*speed*Time.deltaTime);
+
+            //var r2d = GetComponent("Rigidbody2D");
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                //IsKeyEnabled_Space = false;
+                turn = false;
                 bulletObject = Instantiate(bullet, transform.position + (Vector3)direction, Quaternion.identity);
-                    bulletObject.GetComponent<BulletScript>().player = gameObject;
-                    movementLimit = 0.0f;
-                }
+                bulletObject.GetComponent<BulletScript>().player = gameObject;
+                movementLimit = 0.0f;
+                rb2d.velocity = Vector2.zero;
+                rb2d.angularVelocity = 0.0f;
+            }
 
 
 
@@ -111,10 +116,16 @@ public class Player : MonoBehaviour {
 
 
         }
+
+        else
+        {
+            rb2d.velocity = Vector2.zero;
+            rb2d.angularVelocity = 0.0f;
+        }
     }
 
     // Calculates the new velocity and applies it to the position
-    void Move()
+    /*void Move()
     {
         velocity += acceleration;
         if(velocity.magnitude > maxVelocity)
@@ -122,19 +133,23 @@ public class Player : MonoBehaviour {
             velocity.Normalize();
             velocity *= maxVelocity;
         }
-        position += velocity * Time.deltaTime;
+        rb2d.AddForce(velocity);
+        acceleration = Vector2.zero;
+        
+        /*position += velocity * Time.deltaTime;
         transform.position = position;
 
-        acceleration = Vector2.zero;
+        
         position = transform.position;
-    }
+    }*/
 
     // Applies forward thrust force
     void ApplyMovement()
     {
         Vector2 movementForce = direction;
         movementForce *= maxForce;
-        ApplyForce(movementForce);
+        //ApplyForce(movementForce);
+        rb2d.AddForce(movementForce);
 
         movementLimit -= Time.deltaTime; //Mathf.Abs(movementForce.magnitude);
     }
@@ -142,16 +157,20 @@ public class Player : MonoBehaviour {
     // Applies friction force
     void ApplyFriction()
     {
-        Vector2 frictionForce = -velocity * friction;
-        ApplyForce(frictionForce);
+        Vector2 frictionForce = -rb2d.velocity * friction;
+        rb2d.AddForce(frictionForce);
+        //ApplyForce(frictionForce);
     }
 
     // Rotates the player according to mouse location
     void Rotate()
     {
-        direction = (Vector2)mainCamera.ScreenToWorldPoint((Vector2)Input.mousePosition) - position;
-        if(direction.magnitude > 0.5f)
+        Vector2 nextDirection = (Vector2)mainCamera.ScreenToWorldPoint((Vector2)Input.mousePosition) - rb2d.position;
+        float angle = Vector2.Dot(direction, nextDirection) / (direction.magnitude * nextDirection.magnitude);
+        if(nextDirection.magnitude > 0.5f)
         {
+            rb2d.MoveRotation(angle);
+            direction = nextDirection;
             direction.Normalize();
             transform.up = (Vector3)direction;
         }
@@ -165,5 +184,16 @@ public class Player : MonoBehaviour {
     void ApplyForce(Vector2 force)
     {
         acceleration += force / mass;
+    }
+
+    public void Damage(int damageCount)
+    {
+        hp -= damageCount;
+
+        if (hp <= 0)
+        {
+            // Dead!
+            Destroy(gameObject);
+        }
     }
 }

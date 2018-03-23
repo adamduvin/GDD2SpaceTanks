@@ -16,6 +16,7 @@ public class BulletScript : MonoBehaviour {
     public bool isEnemyPlayerOneShot = false;
     public bool isEnemyPlayerTwoShot = false;
     public bool hit = false;
+    public bool isColliding;
 
     public GameObject manager;
     public GravityManager gravMngr;
@@ -32,6 +33,7 @@ public class BulletScript : MonoBehaviour {
         direction = direction.normalized;
         mass = 1.0f;
         maxSpeed = 15.0f;
+        isColliding = false;
 
     }
 	
@@ -54,14 +56,39 @@ public class BulletScript : MonoBehaviour {
         direction = movement.normalized;    // Set direction as normal of velocity so it continues to move in the same direction
     }
 
-  
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (isColliding)
+        {
+            return;
+        }
+
+        string tag = other.tag;
+
+        if(tag == "Player")
+        {
+            if(other.gameObject != player)
+            {
+                Debug.Log("Player");
+                other.gameObject.GetComponent<Player>().Damage(damage);
+                isColliding = true;
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            }
+        }
+
+        else if(tag == "Obstacle")
+        {
+            Debug.Log("Obstacle");
+            isColliding = true;
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
 
     private void OnBecameInvisible()
     {
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
         gravMngr.NullProjectile();
-        Destroy(gameObject);
         manager.GetComponent<GameManager>().SwitchTurn();
         player.GetComponent<Player>().IsKeyEnabled_Space = true;
+        Destroy(gameObject);
     }
 }
