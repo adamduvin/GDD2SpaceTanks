@@ -36,14 +36,14 @@ public class Health : MonoBehaviour {
             {
                 if (shot.transform.position == currentenemy.transform.position)
                 {
-                    Damage(shot.damage);
-
+                    Damage(1);
+                    didItHit = true;
                 }
 
                 playerIndex++;
                 playerIndex %= players.Count;
                 currentPlayer = players[playerIndex];
-                didItHit = true;
+                
 
 
                 // Destroy the shot
@@ -55,12 +55,16 @@ public class Health : MonoBehaviour {
 
             if (isPlayer2 == true || currentenemy.tag == "Player1")
             {
-                Damage(shot.damage);
+                if (shot.transform.position == currentenemy.transform.position)
+                {
+                    Damage(1);
+                    didItHit = true;
+                }
 
                 playerIndex++;
                 playerIndex %= players.Count;
                 currentPlayer = players[playerIndex];
-                didItHit = true;
+                
 
 
                 // Destroy the shot

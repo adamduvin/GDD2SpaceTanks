@@ -19,6 +19,8 @@ public class BulletScript : MonoBehaviour {
 
     public GameObject manager;
     public GravityManager gravMngr;
+    private bool check;
+
 
     // Use this for initialization
     void Start () {
@@ -32,6 +34,7 @@ public class BulletScript : MonoBehaviour {
         direction = direction.normalized;
         mass = 1.0f;
         maxSpeed = 15.0f;
+        check = false;
 
     }
 	
@@ -61,7 +64,15 @@ public class BulletScript : MonoBehaviour {
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         gravMngr.NullProjectile();
         Destroy(gameObject);
-        manager.GetComponent<GameManager>().SwitchTurn();
-        player.GetComponent<Player>().IsKeyEnabled_Space = true;
+        /*
+        if (GameObject.FindGameObjectWithTag("Player1") != null || GameObject.FindGameObjectWithTag("Player2") != null)
+        {
+        }
+        */
+    
+            manager.GetComponent<GameManager>().SwitchTurn();
+       
+
+            player.GetComponent<Player>().IsKeyEnabled_Space = true;
     }
 }

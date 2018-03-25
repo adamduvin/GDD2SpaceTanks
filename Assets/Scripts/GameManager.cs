@@ -8,12 +8,15 @@ public class GameManager : MonoBehaviour {
     public GameObject currentPlayer;
     //public GameObject bullet;
     public int playerIndex;
+    public bool gameOver;
 
 	// Use this for initialization
 	void Start () {
+        gameOver = false;
         playerIndex = 0;
         currentPlayer = players[playerIndex];
         currentPlayer.GetComponent<Player>().turn = true;
+        
 	}
 	
 	// Update is called once per frame
@@ -24,13 +27,28 @@ public class GameManager : MonoBehaviour {
     public void SwitchTurn()
     {
         //BulletScript shot = bullet.gameObject.GetComponent<BulletScript>();
-        currentPlayer.GetComponent<Player>().turn = false;
-        playerIndex++;
-        playerIndex %= players.Count;
-        currentPlayer = players[playerIndex];
-        currentPlayer.GetComponent<Player>().turn = true;
-        currentPlayer.GetComponent<Player>().movementLimit = 1.0f;
-        //if (shot.hit == false)
+
+        if (gameOver == true)
+        {
+            Debug.Log("Game Over");
+
+        }
+
+        else
+        {  
+            currentPlayer.GetComponent<Player>().turn = false;
+            playerIndex++;
+            playerIndex %= players.Count;
+            currentPlayer = players[playerIndex];
+            currentPlayer.GetComponent<Player>().turn = true;
+            currentPlayer.GetComponent<Player>().movementLimit = 1.0f;
+        }
+        
+
+        
+        
+       
+            //if (shot.hit == false)
         //{
             //shot.isEnemyPlayerOneShot = !shot.isEnemyPlayerOneShot;
             //shot.isEnemyPlayerTwoShot = !shot.isEnemyPlayerTwoShot;
