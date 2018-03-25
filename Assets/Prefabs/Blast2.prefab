@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1615399372337866}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.836847, y: -1.3488376, z: 0.12700942}
+  m_LocalPosition: {x: -0.19432247, y: -3.2058368, z: 0.12700942}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -97,6 +97,7 @@ MonoBehaviour:
   isEnemyPlayerOneShot: 1
   isEnemyPlayerTwoShot: 0
   hit: 0
+  isColliding: 0
   manager: {fileID: 0}
   gravMngr: {fileID: 0}
 --- !u!212 &212166777868719920

@@ -54,6 +54,14 @@ public class BulletScript : MonoBehaviour {
         rigidbodyComponent.velocity = movement;
 
         direction = movement.normalized;    // Set direction as normal of velocity so it continues to move in the same direction
+        //Vector2 nextDirection = rigidbodyComponent.velocity;
+        /*nextDirection.Normalize();
+        float angle = Vector2.Dot(direction, nextDirection) / (direction.magnitude * nextDirection.magnitude);
+        rigidbodyComponent.MoveRotation(angle);
+        direction = nextDirection;
+        direction.Normalize();
+        transform.up = (Vector3)direction;*/
+        //transform.up = direction;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
