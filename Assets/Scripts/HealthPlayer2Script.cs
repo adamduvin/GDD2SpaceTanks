@@ -6,6 +6,9 @@ public class HealthPlayer2Script : MonoBehaviour {
 
     public int hp = 3;
     private bool isPlayer2 = true;
+    public GameObject manager;
+    private bool check;
+
 
     public void Damage(int damageCount)
     {
@@ -13,8 +16,11 @@ public class HealthPlayer2Script : MonoBehaviour {
 
         if (hp <= 0)
         {
+            manager.GetComponent<GameManager>().gameOver = true;
             // Dead!
             Destroy(gameObject);
+            
+
         }
     }
 
@@ -44,8 +50,9 @@ public class HealthPlayer2Script : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
-	}
+        manager = GameObject.Find("GameManager");
+        check = manager.GetComponent<GameManager>().gameOver;
+    }
 	
 	// Update is called once per frame
 	void Update () {

@@ -5,6 +5,8 @@ using UnityEngine;
 public class HealthPlayer1Script : MonoBehaviour {
     public int hp = 3;
     private bool isPlayer1 = true;
+    public GameObject manager;
+    
 
     public void Damage(int damageCount)
     {
@@ -12,8 +14,10 @@ public class HealthPlayer1Script : MonoBehaviour {
 
         if (hp <= 0)
         {
+            manager.GetComponent<GameManager>().gameOver = true;
             // Dead!
             Destroy(gameObject);
+            
         }
     }
 
@@ -43,7 +47,7 @@ public class HealthPlayer1Script : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
+        manager = GameObject.Find("GameManager");
     }
 
     // Update is called once per frame
