@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: cb95b51f0676db04c912c1bf2d3553f8
+timeCreated: 1521995373
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: SPACEBAR
+  fontNames:
+  - SPACEBAR
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
