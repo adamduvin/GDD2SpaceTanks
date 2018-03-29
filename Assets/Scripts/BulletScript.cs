@@ -5,7 +5,6 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour {
 
     public GameObject player;       // Player who fired the shot
-    //public float speed;
     public Vector2 direction;
     public float mass;
     public float maxSpeed;
@@ -16,6 +15,7 @@ public class BulletScript : MonoBehaviour {
     public bool isEnemyPlayerOneShot = false;
     public bool isEnemyPlayerTwoShot = false;
     public bool hit = false;
+    public bool isColliding;
 
     public GameObject manager;
     public GravityManager gravMngr;
@@ -24,8 +24,6 @@ public class BulletScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //speed = 1.0f;
-        //speed = speed.normalized;
         manager = GameObject.Find("GameManager");
         gravMngr = manager.GetComponent<GravityManager>();
         gravMngr.AssignProjectile(gameObject);
@@ -34,6 +32,7 @@ public class BulletScript : MonoBehaviour {
         direction = direction.normalized;
         mass = 1.0f;
         maxSpeed = 15.0f;
+        isColliding = false;
         check = false;
 
     }
@@ -57,22 +56,39 @@ public class BulletScript : MonoBehaviour {
         direction = movement.normalized;    // Set direction as normal of velocity so it continues to move in the same direction
     }
 
-  
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (isColliding)
+        {
+            return;
+        }
+
+        string tag = other.tag;
+
+        if(tag == "Player")
+        {
+            if(other.gameObject != player)
+            {
+                Debug.Log("Player");
+                other.gameObject.GetComponent<Player>().Damage(damage);
+                isColliding = true;
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            }
+        }
+
+        else if(tag == "Obstacle")
+        {
+            Debug.Log("Obstacle");
+            isColliding = true;
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
 
     private void OnBecameInvisible()
     {
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
         gravMngr.NullProjectile();
+        manager.GetComponent<GameManager>().SwitchTurn();
+        player.GetComponent<Player>().IsKeyEnabled_Space = true;
         Destroy(gameObject);
-        /*
-        if (GameObject.FindGameObjectWithTag("Player1") != null || GameObject.FindGameObjectWithTag("Player2") != null)
-        {
-        }
-        */
-    
-            manager.GetComponent<GameManager>().SwitchTurn();
-       
-
-            player.GetComponent<Player>().IsKeyEnabled_Space = true;
     }
 }

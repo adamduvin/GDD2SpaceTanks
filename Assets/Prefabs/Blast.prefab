@@ -22,11 +22,7 @@ GameObject:
   - component: {fileID: 212335866127350424}
   - component: {fileID: 50962517913134946}
   - component: {fileID: 114164663049877580}
-<<<<<<< HEAD
-  - component: {fileID: 58263762867076076}
-=======
   - component: {fileID: 61561286025539702}
->>>>>>> 2ac326a110f5acd19418c7caba2e36688c63e2ab
   m_Layer: 0
   m_Name: Blast
   m_TagString: Untagged
@@ -41,11 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1930991997565116}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-<<<<<<< HEAD
-  m_LocalPosition: {x: -1.989, y: -2.839, z: -1}
-=======
   m_LocalPosition: {x: -5.4643965, y: -0.4609269, z: 0.12700942}
->>>>>>> 2ac326a110f5acd19418c7caba2e36688c63e2ab
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -71,13 +63,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
-<<<<<<< HEAD
---- !u!58 &58263762867076076
-CircleCollider2D:
-=======
 --- !u!61 &61561286025539702
 BoxCollider2D:
->>>>>>> 2ac326a110f5acd19418c7caba2e36688c63e2ab
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -85,20 +72,11 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-<<<<<<< HEAD
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.006, y: 0.005}
-  serializedVersion: 2
-  m_Radius: 0.18
-=======
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0.09814358, y: 0.0015810728}
   serializedVersion: 2
   m_Size: {x: 0.0759131, y: 0.33234358}
->>>>>>> 2ac326a110f5acd19418c7caba2e36688c63e2ab
 --- !u!114 &114164663049877580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -112,13 +90,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 10, y: 10}
   direction: {x: 1, y: 0}
-<<<<<<< HEAD
-  mass: 0
-=======
   damage: 1
   isEnemyPlayerOneShot: 0
   isEnemyPlayerTwoShot: 0
->>>>>>> 2ac326a110f5acd19418c7caba2e36688c63e2ab
 --- !u!212 &212335866127350424
 SpriteRenderer:
   m_ObjectHideFlags: 1
