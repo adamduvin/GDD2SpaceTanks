@@ -5,7 +5,6 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour {
 
     public GameObject player;       // Player who fired the shot
-    //public float speed;
     public Vector2 direction;
     public float mass;
     public float maxSpeed;
@@ -23,8 +22,6 @@ public class BulletScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //speed = 1.0f;
-        //speed = speed.normalized;
         manager = GameObject.Find("GameManager");
         gravMngr = manager.GetComponent<GravityManager>();
         gravMngr.AssignProjectile(gameObject);
@@ -54,14 +51,6 @@ public class BulletScript : MonoBehaviour {
         rigidbodyComponent.velocity = movement;
 
         direction = movement.normalized;    // Set direction as normal of velocity so it continues to move in the same direction
-        //Vector2 nextDirection = rigidbodyComponent.velocity;
-        /*nextDirection.Normalize();
-        float angle = Vector2.Dot(direction, nextDirection) / (direction.magnitude * nextDirection.magnitude);
-        rigidbodyComponent.MoveRotation(angle);
-        direction = nextDirection;
-        direction.Normalize();
-        transform.up = (Vector3)direction;*/
-        //transform.up = direction;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

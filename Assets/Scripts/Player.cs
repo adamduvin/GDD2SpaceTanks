@@ -24,6 +24,9 @@ public class Player : MonoBehaviour {
     public Rigidbody2D rb2d;
     public bool IsKeyEnabled_Space { get; set; }
 
+    public GameObject statusBar;
+    public float prevFuel;
+
     // Use this for initialization
     void Start () {
         position = transform.position;
@@ -38,6 +41,8 @@ public class Player : MonoBehaviour {
         movementLimit = 1.0f;
         manager = GameObject.Find("GameManager");
         hp = 3;
+        prevFuel = movementLimit;
+        
 
 
         rb2d = GetComponent<Rigidbody2D>();
@@ -46,8 +51,6 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //if (IsKeyEnabled_Space)
-        //{
         if (turn)
         {
             Rotate();
@@ -65,19 +68,6 @@ public class Player : MonoBehaviour {
                 }
                 else rb2d.velocity = Vector2.zero;
             }
-            //Move();
-
-            //float moveHorizontal = Input.GetAxis("Horizontal");
-            //float moveVertical = Input.GetAxis("Vertical");
-            //float rotateHorizontal = Input.GetAxis("MouseX");
-            // float rotateVertical = Input.GetAxis("MouseY");
-            //direction = new Vector2 (rotateHorizontal,rotateVertical);
-            //Rotate();
-            //transform.Translate(0, moveVertical * speed * Time.deltaTime, 0);
-            //Vector2 movement = new Vector2(moveHorizontal,moveVertical);
-            // rb2d.AddForce(movement*speed*Time.deltaTime);
-
-            //var r2d = GetComponent("Rigidbody2D");
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 //IsKeyEnabled_Space = false;
@@ -88,33 +78,6 @@ public class Player : MonoBehaviour {
                 rb2d.velocity = Vector2.zero;
                 rb2d.angularVelocity = 0.0f;
             }
-
-
-
-
-
-
-
-
-
-
-            /*
-            // Here the position of the player is clamped into the boundaries
-            transform.position = (new Vector3(
-                Mathf.Clamp(transform.position.x, -7.5f, 7.5f),
-                Mathf.Clamp(transform.position.y, -4.5f, 4.5f),
-                transform.position.z)
-            );
-            */
-
-
-
-
-
-
-
-
-
         }
 
         else
@@ -124,34 +87,17 @@ public class Player : MonoBehaviour {
         }
     }
 
-    // Calculates the new velocity and applies it to the position
-    /*void Move()
-    {
-        velocity += acceleration;
-        if(velocity.magnitude > maxVelocity)
-        {
-            velocity.Normalize();
-            velocity *= maxVelocity;
-        }
-        rb2d.AddForce(velocity);
-        acceleration = Vector2.zero;
-        
-        /*position += velocity * Time.deltaTime;
-        transform.position = position;
-
-        
-        position = transform.position;
-    }*/
-
     // Applies forward thrust force
     void ApplyMovement()
     {
         Vector2 movementForce = direction;
         movementForce *= maxForce;
-        //ApplyForce(movementForce);
         rb2d.AddForce(movementForce);
 
-        movementLimit -= Time.deltaTime; //Mathf.Abs(movementForce.magnitude);
+        movementLimit -= Time.deltaTime;
+        float fuelDecrement = prevFuel - movementLimit;
+        prevFuel = movementLimit;
+        statusBar.GetComponent<HealthFuelBar>().Decrement("fuel", fuelDecrement);
     }
 
     // Applies friction force
@@ -159,7 +105,6 @@ public class Player : MonoBehaviour {
     {
         Vector2 frictionForce = -rb2d.velocity * friction;
         rb2d.AddForce(frictionForce);
-        //ApplyForce(frictionForce);
     }
 
     // Rotates the player according to mouse location
@@ -189,6 +134,7 @@ public class Player : MonoBehaviour {
     public void Damage(int damageCount)
     {
         hp -= damageCount;
+        statusBar.GetComponent<HealthFuelBar>().Decrement("health", 0.0f);
 
         if (hp <= 0)
         {
