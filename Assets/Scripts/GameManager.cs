@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour {
         if (gameOver == true)
         {
             Debug.Log("Game Over");
+			Application.LoadLevel ("gameOver");
 
         }
 
