@@ -19,6 +19,8 @@ public class BulletScript : MonoBehaviour {
 
     public GameObject manager;
     public GravityManager gravMngr;
+    private bool check;
+
 
     // Use this for initialization
     void Start () {
@@ -31,6 +33,7 @@ public class BulletScript : MonoBehaviour {
         mass = 1.0f;
         maxSpeed = 15.0f;
         isColliding = false;
+        check = false;
 
     }
 	
